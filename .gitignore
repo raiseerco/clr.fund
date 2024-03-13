@@ -1,4 +1,5 @@
 node_modules
+params
 vue-app/.env
 vue-app/.env.dev
 vue-app/.env.xdai

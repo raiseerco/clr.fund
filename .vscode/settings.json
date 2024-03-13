@@ -1,6 +1,6 @@
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll": true
+    "source.fixAll": "explicit"
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "eslint.packageManager": "yarn",
@@ -13,5 +13,11 @@
     "typescriptreact"
   ],
   "solidity.compileUsingRemoteVersion": "0.6.4+commit.1dca32f3",
-  "solidity.packageDefaultDependenciesContractsDirectory": ""
+  "solidity.packageDefaultDependenciesContractsDirectory": "",
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  }
 }

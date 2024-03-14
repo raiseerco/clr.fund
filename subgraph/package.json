@@ -18,6 +18,7 @@
     "prepare:arbitrum": "mustache config/arbitrum.json subgraph.template.yaml > subgraph.yaml",
     "prepare:arbitrum-rinkeby": "mustache config/arbitrum-rinkeby.json subgraph.template.yaml > subgraph.yaml",
     "prepare:optimism-sepolia": "mustache config/optimism-sepolia.json subgraph.template.yaml > subgraph.yaml",
+    "prepare:optimism": "mustache config/optimism.json subgraph.template.yaml > subgraph.yaml",
     "prepare:arbitrum-goerli": "mustache config/arbitrum-goerli.json subgraph.template.yaml > subgraph.yaml",
     "prepare:xdai": "mustache config/xdai.json subgraph.template.yaml > subgraph.yaml",
     "codegen": "graph codegen",

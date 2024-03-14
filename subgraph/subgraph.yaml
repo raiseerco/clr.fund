@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: ClrFund
-    network: optimism-sepolia
+    network: optimism
     source:
-      address: '0xEC83d0866DB0A00874B51131D08A1F4F12DFdeB2'
+      address: '0xa5dC23B6325D3B2f68E7f0C4be706C75697B612C'
       abi: ClrFund
-      startBlock: 9282041
+      startBlock: 117397559
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -60,10 +60,10 @@ dataSources:
       file: ./src/ClrFundMapping.ts
   - kind: ethereum/contract
     name: OptimisticRecipientRegistry
-    network: optimism-sepolia
+    network: optimism
     source:
       abi: OptimisticRecipientRegistry
-      startBlock: 9282041
+      startBlock: 117397559
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -85,7 +85,7 @@ dataSources:
 templates:
   - name: FundingRound
     kind: ethereum/contract
-    network: optimism-sepolia
+    network: optimism
     source:
       abi: FundingRound
     mapping:
@@ -119,7 +119,7 @@ templates:
       file: ./src/FundingRoundMapping.ts
   - name: OptimisticRecipientRegistry
     kind: ethereum/contract
-    network: optimism-sepolia
+    network: optimism
     source:
       abi: OptimisticRecipientRegistry
     mapping:
@@ -142,7 +142,7 @@ templates:
       file: ./src/OptimisticRecipientRegistryMapping.ts
   - name: BrightIdUserRegistry
     kind: ethereum/contract
-    network: optimism-sepolia
+    network: optimism
     source:
       abi: BrightIdUserRegistry
     mapping:
@@ -163,7 +163,7 @@ templates:
       file: ./src/BrightIdUserRegistryMapping.ts
   - name: MACI
     kind: ethereum/contract
-    network: optimism-sepolia
+    network: optimism
     source:
       abi: MACI
     mapping:
@@ -184,7 +184,7 @@ templates:
       file: ./src/MACIMapping.ts
   - name: Poll
     kind: ethereum/contract
-    network: optimism-sepolia
+    network: optimism
     source:
       abi: Poll
     mapping:

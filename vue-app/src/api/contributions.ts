@@ -1,19 +1,19 @@
-import { Contract, FixedNumber, parseUnits, id } from 'ethers'
-import type { TransactionResponse, Signer } from 'ethers'
-import { Keypair, PubKey, PrivKey, Message, Command } from '@clrfund/common'
-
-import type { RoundInfo } from './round'
-import { FundingRound, ERC20 } from './abi'
+import { Command, Keypair, Message, PrivKey, PubKey } from '@clrfund/common'
+import { Contract, FixedNumber, id, parseUnits } from 'ethers'
+import { ERC20, FundingRound } from './abi'
+import type { Signer, TransactionResponse } from 'ethers'
 import { clrFundContract, provider } from './core'
+
 import type { Project } from './projects'
-import sdk from '@/graphql/sdk'
+import type { RoundInfo } from './round'
 import { Transaction } from '@/utils/transaction'
+import sdk from '@/graphql/sdk'
 
 export const DEFAULT_CONTRIBUTION_AMOUNT = 5
 export const MAX_CONTRIBUTION_AMOUNT = 10000 // See FundingRound.sol
 
 // The batch of maximum size will burn 9100000 gas at 700000 gas per message
-export const MAX_CART_SIZE = 8
+export const MAX_CART_SIZE = 25
 
 export interface CartItem extends Project {
   amount: string

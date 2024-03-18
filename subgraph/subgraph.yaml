@@ -8,9 +8,9 @@ dataSources:
     name: ClrFund
     network: optimism
     source:
-      address: '0xa5dC23B6325D3B2f68E7f0C4be706C75697B612C'
+      address: '0x9882F04F865Ef02a48B1A95CB54Baf002e0a5bC2'
       abi: ClrFund
-      startBlock: 117397559
+      startBlock: 117396890
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -63,7 +63,7 @@ dataSources:
     network: optimism
     source:
       abi: OptimisticRecipientRegistry
-      startBlock: 117397559
+      startBlock: 117396890
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

@@ -1,42 +1,40 @@
-import { BigInt, log, Address } from '@graphprotocol/graph-ts'
+/* eslint-disable @typescript-eslint/ban-types */
+import { Address, BigInt, log } from '@graphprotocol/graph-ts'
 import {
+  ClrFund,
+  ContributorRegistry,
+  FundingRound,
+  Poll,
+  RecipientRegistry,
+  Token,
+} from '../generated/schema'
+import {
+  ClrFund as ClrFundContract,
   CoordinatorChanged,
   FundingSourceAdded,
   FundingSourceRemoved,
   OwnershipTransferred,
+  RecipientRegistryChanged,
   RoundFinalized,
   RoundStarted,
   TokenChanged,
   UserRegistryChanged,
-  RecipientRegistryChanged,
-  ClrFund as ClrFundContract,
 } from '../generated/ClrFund/ClrFund'
-
-import { Token as TokenContract } from '../generated/ClrFund/Token'
-import { Poll as PollContract } from '../generated/ClrFund/Poll'
-import { MACI as MACIContract } from '../generated/ClrFund/MACI'
-
-import { MACIFactory as MACIFactoryContract } from '../generated/ClrFund/MACIFactory'
-import { FundingRound as FundingRoundContract } from '../generated/ClrFund/FundingRound'
-
-import { OptimisticRecipientRegistry as RecipientRegistryContract } from '../generated/ClrFund/OptimisticRecipientRegistry'
-import { BrightIdUserRegistry as BrightIdUserRegistryContract } from '../generated/ClrFund/BrightIdUserRegistry'
-import { createRecipientRegistry } from './RecipientRegistry'
-
 import {
   FundingRound as FundingRoundTemplate,
-  OptimisticRecipientRegistry as recipientRegistryTemplate,
   MACI as MACITemplate,
   Poll as PollTemplate,
+  OptimisticRecipientRegistry as recipientRegistryTemplate,
 } from '../generated/templates'
-import {
-  ClrFund,
-  FundingRound,
-  RecipientRegistry,
-  ContributorRegistry,
-  Token,
-  Poll,
-} from '../generated/schema'
+
+import { BrightIdUserRegistry as BrightIdUserRegistryContract } from '../generated/ClrFund/BrightIdUserRegistry'
+import { FundingRound as FundingRoundContract } from '../generated/ClrFund/FundingRound'
+import { MACI as MACIContract } from '../generated/ClrFund/MACI'
+import { MACIFactory as MACIFactoryContract } from '../generated/ClrFund/MACIFactory'
+import { Poll as PollContract } from '../generated/ClrFund/Poll'
+import { OptimisticRecipientRegistry as RecipientRegistryContract } from '../generated/ClrFund/OptimisticRecipientRegistry'
+import { Token as TokenContract } from '../generated/ClrFund/Token'
+import { createRecipientRegistry } from './RecipientRegistry'
 
 function createContributorRegistry(
   clrFundAddress: Address,
@@ -44,14 +42,14 @@ function createContributorRegistry(
 ): ContributorRegistry {
   log.info('New contributorRegistry', [])
 
-  let owner = clrFundAddress
-  let contributorRegistryId = contributorRegistryAddress.toHexString()
+  const owner = clrFundAddress
+  const contributorRegistryId = contributorRegistryAddress.toHexString()
 
-  let brightIdUserRegistryContract = BrightIdUserRegistryContract.bind(
+  const brightIdUserRegistryContract = BrightIdUserRegistryContract.bind(
     contributorRegistryAddress
   )
-  let brightIdSponsorCall = brightIdUserRegistryContract.try_brightIdSponsor()
-  let contributorRegistry = new ContributorRegistry(contributorRegistryId)
+  const brightIdSponsorCall = brightIdUserRegistryContract.try_brightIdSponsor()
+  const contributorRegistry = new ContributorRegistry(contributorRegistryId)
   contributorRegistry.context = brightIdSponsorCall.reverted
     ? 'BrightId user registry'
     : 'simple user registry'
@@ -63,12 +61,12 @@ function createContributorRegistry(
 }
 
 function createToken(tokenAddress: Address, blockTimestamp: BigInt): Token {
-  let tokenId = tokenAddress.toHexString()
-  let token = new Token(tokenId)
-  let tokenContract = TokenContract.bind(tokenAddress)
+  const tokenId = tokenAddress.toHexString()
+  const token = new Token(tokenId)
+  const tokenContract = TokenContract.bind(tokenAddress)
 
-  let symbol = tokenContract.try_symbol()
-  let decimals = tokenContract.try_decimals()
+  const symbol = tokenContract.try_symbol()
+  const decimals = tokenContract.try_decimals()
 
   if (!symbol.reverted) {
     token.symbol = symbol.value
@@ -78,7 +76,7 @@ function createToken(tokenAddress: Address, blockTimestamp: BigInt): Token {
     token.decimals = BigInt.fromI32(decimals.value)
   }
 
-  let timestamp = blockTimestamp.toString()
+  const timestamp = blockTimestamp.toString()
   token.createdAt = timestamp
   token.lastUpdatedAt = timestamp
   token.tokenAddress = tokenAddress
@@ -91,23 +89,23 @@ function createOrUpdateClrFund(
   clrFundAddress: Address,
   timestamp: BigInt
 ): ClrFund {
-  let clrFundId = clrFundAddress.toHexString()
+  const clrFundId = clrFundAddress.toHexString()
 
-  let clrFundContract = ClrFundContract.bind(clrFundAddress)
+  const clrFundContract = ClrFundContract.bind(clrFundAddress)
 
-  let loadedClrFund = ClrFund.load(clrFundId)
-  let clrFund = loadedClrFund ? loadedClrFund : new ClrFund(clrFundId)
+  const loadedClrFund = ClrFund.load(clrFundId)
+  const clrFund = loadedClrFund ? loadedClrFund : new ClrFund(clrFundId)
 
-  let maciFactoryAddressCall = clrFundContract.try_maciFactory()
+  const maciFactoryAddressCall = clrFundContract.try_maciFactory()
   if (maciFactoryAddressCall.reverted) {
     log.info('TRY maciFactoryAddress Failed', [])
   } else {
-    let maciFactoryAddress = maciFactoryAddressCall.value
-    let maciFactoryContract = MACIFactoryContract.bind(maciFactoryAddress)
+    const maciFactoryAddress = maciFactoryAddressCall.value
+    const maciFactoryContract = MACIFactoryContract.bind(maciFactoryAddress)
 
-    let stateTreeDepth = maciFactoryContract.stateTreeDepth()
-    let messageTreeDepth = maciFactoryContract.treeDepths().value2
-    let voteOptionTreeDepth = maciFactoryContract.treeDepths().value3
+    const stateTreeDepth = maciFactoryContract.stateTreeDepth()
+    const messageTreeDepth = maciFactoryContract.treeDepths().value2
+    const voteOptionTreeDepth = maciFactoryContract.treeDepths().value3
 
     clrFund.maciFactory = maciFactoryAddress
     clrFund.messageTreeDepth = BigInt.fromI32(messageTreeDepth)
@@ -117,27 +115,27 @@ function createOrUpdateClrFund(
     log.info('New maciFactoryAddress', [])
   }
 
-  let nativeToken = clrFundContract.nativeToken()
-  let nativeTokenId = nativeToken.toHexString()
-  let nativeTokenEntity = Token.load(nativeTokenId)
+  const nativeToken = clrFundContract.nativeToken()
+  const nativeTokenId = nativeToken.toHexString()
+  const nativeTokenEntity = Token.load(nativeTokenId)
   if (!nativeTokenEntity) {
     createToken(nativeToken, timestamp)
   }
 
-  let coordinator = clrFundContract.coordinator()
-  let owner = clrFundContract.owner()
+  const coordinator = clrFundContract.coordinator()
+  const owner = clrFundContract.owner()
 
   //Check if these registries already exist/are being tracked
-  let recipientRegistryAddress = clrFundContract.recipientRegistry()
-  let recipientRegistryId = recipientRegistryAddress.toHexString()
-  let recipientRegistry = RecipientRegistry.load(recipientRegistryId)
+  const recipientRegistryAddress = clrFundContract.recipientRegistry()
+  const recipientRegistryId = recipientRegistryAddress.toHexString()
+  const recipientRegistry = RecipientRegistry.load(recipientRegistryId)
   if (!recipientRegistry) {
     createRecipientRegistry(clrFundId, recipientRegistryAddress)
   }
 
-  let contributorRegistryAddress = clrFundContract.userRegistry()
-  let contributorRegistryId = contributorRegistryAddress.toHexString()
-  let contributorRegistry = ContributorRegistry.load(contributorRegistryId)
+  const contributorRegistryAddress = clrFundContract.userRegistry()
+  const contributorRegistryId = contributorRegistryAddress.toHexString()
+  const contributorRegistry = ContributorRegistry.load(contributorRegistryId)
   if (!contributorRegistry) {
     createContributorRegistry(clrFundAddress, contributorRegistryAddress)
   }
@@ -176,19 +174,19 @@ export function handleOwnershipTransferred(event: OwnershipTransferred): void {
 
 export function handleRoundFinalized(event: RoundFinalized): void {
   log.info('handleRoundFinalized', [])
-  let fundingRoundAddress = event.params._round
+  const fundingRoundAddress = event.params._round
 
-  let fundingRoundContract = FundingRoundContract.bind(fundingRoundAddress)
+  const fundingRoundContract = FundingRoundContract.bind(fundingRoundAddress)
 
-  let fundingRound = new FundingRound(fundingRoundAddress.toHexString())
+  const fundingRound = new FundingRound(fundingRoundAddress.toHexString())
 
-  let totalSpent = fundingRoundContract.totalSpent()
-  let totalVotes = fundingRoundContract.totalVotes()
-  let tallyHash = fundingRoundContract.tallyHash()
-  let isFinalized = fundingRoundContract.isFinalized()
-  let isCancelled = fundingRoundContract.isCancelled()
-  let contributorCount = fundingRoundContract.contributorCount()
-  let matchingPoolSize = fundingRoundContract.matchingPoolSize()
+  const totalSpent = fundingRoundContract.totalSpent()
+  const totalVotes = fundingRoundContract.totalVotes()
+  const tallyHash = fundingRoundContract.tallyHash()
+  const isFinalized = fundingRoundContract.isFinalized()
+  const isCancelled = fundingRoundContract.isCancelled()
+  const contributorCount = fundingRoundContract.contributorCount()
+  const matchingPoolSize = fundingRoundContract.matchingPoolSize()
 
   fundingRound.totalSpent = totalSpent
   fundingRound.totalVotes = totalVotes
@@ -203,28 +201,28 @@ export function handleRoundFinalized(event: RoundFinalized): void {
 
 export function handleRoundStarted(event: RoundStarted): void {
   log.info('handleRoundStarted!!!', [])
-  let clrFundId = event.address.toHexString()
-  let fundingRoundId = event.params._round.toHexString()
+  const clrFundId = event.address.toHexString()
+  const fundingRoundId = event.params._round.toHexString()
 
-  let clrFund = createOrUpdateClrFund(event.address, event.block.timestamp)
+  const clrFund = createOrUpdateClrFund(event.address, event.block.timestamp)
 
   FundingRoundTemplate.create(event.params._round)
-  let fundingRoundAddress = event.params._round
-  let fundingRoundContract = FundingRoundContract.bind(fundingRoundAddress)
-  let fundingRound = new FundingRound(fundingRoundId)
+  const fundingRoundAddress = event.params._round
+  const fundingRoundContract = FundingRoundContract.bind(fundingRoundAddress)
+  const fundingRound = new FundingRound(fundingRoundId)
 
   log.info('Get all the things', [])
-  let nativeToken = fundingRoundContract.nativeToken()
-  let nativeTokenId = nativeToken.toHexString()
-  let nativeTokenEntity = Token.load(nativeTokenId)
+  const nativeToken = fundingRoundContract.nativeToken()
+  const nativeTokenId = nativeToken.toHexString()
+  const nativeTokenEntity = Token.load(nativeTokenId)
   if (!nativeTokenEntity) {
     createToken(nativeToken, event.block.timestamp)
   }
-  let coordinator = fundingRoundContract.coordinator()
-  let maci = fundingRoundContract.maci()
-  let voiceCreditFactor = fundingRoundContract.voiceCreditFactor()
-  let contributorCount = fundingRoundContract.contributorCount()
-  let matchingPoolSize = fundingRoundContract.matchingPoolSize()
+  const coordinator = fundingRoundContract.coordinator()
+  const maci = fundingRoundContract.maci()
+  const voiceCreditFactor = fundingRoundContract.voiceCreditFactor()
+  const contributorCount = fundingRoundContract.contributorCount()
+  const matchingPoolSize = fundingRoundContract.matchingPoolSize()
 
   MACITemplate.create(maci)
 
@@ -239,42 +237,42 @@ export function handleRoundStarted(event: RoundStarted): void {
   fundingRound.matchingPoolSize = matchingPoolSize
   fundingRound.startTime = event.block.timestamp
 
-  let recipientRegistryId = clrFund.recipientRegistry
-  let recipientRegistryAddress = clrFund.recipientRegistryAddress
+  const recipientRegistryId = clrFund.recipientRegistry
+  const recipientRegistryAddress = clrFund.recipientRegistryAddress
 
-  let contributorRegistryId = clrFund.contributorRegistry
-  let contributorRegistryAddress = clrFund.contributorRegistryAddress
+  const contributorRegistryId = clrFund.contributorRegistry
+  const contributorRegistryAddress = clrFund.contributorRegistryAddress
 
-  let maciContract = MACIContract.bind(maci)
-  let stateTreeDepth = maciContract.try_stateTreeDepth()
+  const maciContract = MACIContract.bind(maci)
+  const stateTreeDepth = maciContract.try_stateTreeDepth()
   if (!stateTreeDepth.reverted) {
     fundingRound.stateTreeDepth = stateTreeDepth.value
   }
 
   log.info('TRY pollAddress', [])
-  let pollIdCall = fundingRoundContract.try_pollId()
+  const pollIdCall = fundingRoundContract.try_pollId()
   if (!pollIdCall.reverted) {
     fundingRound.pollId = pollIdCall.value
   }
 
-  let pollAddressCall = fundingRoundContract.try_poll()
+  const pollAddressCall = fundingRoundContract.try_poll()
   if (pollAddressCall.reverted) {
     log.info('TRY pollAddress Failed', [])
   } else {
-    let pollAddress = pollAddressCall.value
+    const pollAddress = pollAddressCall.value
     fundingRound.pollAddress = pollAddress
     PollTemplate.create(pollAddress)
 
-    let pollEntityId = pollAddress.toHexString()
-    let pollEntity = new Poll(pollEntityId)
+    const pollEntityId = pollAddress.toHexString()
+    const pollEntity = new Poll(pollEntityId)
     pollEntity.fundingRound = fundingRoundId
     pollEntity.save()
 
-    let pollContract = PollContract.bind(pollAddress)
-    let deployTimeAndDuration = pollContract.try_getDeployTimeAndDuration()
+    const pollContract = PollContract.bind(pollAddress)
+    const deployTimeAndDuration = pollContract.try_getDeployTimeAndDuration()
     if (!deployTimeAndDuration.reverted) {
-      let deployTime = deployTimeAndDuration.value.value0
-      let duration = deployTimeAndDuration.value.value1
+      const deployTime = deployTimeAndDuration.value.value0
+      const duration = deployTimeAndDuration.value.value1
       // MACI's signup deadline is the same as the voting deadline
       fundingRound.signUpDeadline = deployTime.plus(duration)
       fundingRound.votingDeadline = fundingRound.signUpDeadline
@@ -283,13 +281,13 @@ export function handleRoundStarted(event: RoundStarted): void {
       log.info('New pollAddress', [])
     }
 
-    let treeDepths = pollContract.try_treeDepths()
+    const treeDepths = pollContract.try_treeDepths()
     if (!treeDepths.reverted) {
       fundingRound.messageTreeDepth = treeDepths.value.value2
       fundingRound.voteOptionTreeDepth = treeDepths.value.value3
     }
 
-    let coordinatorPubKey = pollContract.try_coordinatorPubKey()
+    const coordinatorPubKey = pollContract.try_coordinatorPubKey()
     if (!coordinatorPubKey.reverted) {
       fundingRound.coordinatorPubKeyX = coordinatorPubKey.value.value0
       fundingRound.coordinatorPubKeyY = coordinatorPubKey.value.value1

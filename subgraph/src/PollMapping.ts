@@ -1,7 +1,7 @@
-import { log } from '@graphprotocol/graph-ts'
-import { PublishMessage } from '../generated/templates/Poll/Poll'
+import { FundingRound, Message, Poll, PublicKey } from '../generated/schema'
 
-import { FundingRound, Poll, Message, PublicKey } from '../generated/schema'
+import { PublishMessage } from '../generated/templates/Poll/Poll'
+import { log } from '@graphprotocol/graph-ts'
 import { makePublicKeyId } from './PublicKey'
 
 export function handlePublishMessage(event: PublishMessage): void {
@@ -13,8 +13,8 @@ export function handlePublishMessage(event: PublishMessage): void {
     return
   }
 
-  let pollEntityId = event.transaction.to!.toHex()
-  let poll = Poll.load(pollEntityId)
+  const pollEntityId = event.transaction.to!.toHex()
+  const poll = Poll.load(pollEntityId)
   if (poll == null) {
     log.error('Error: handlePublishMessage failed poll not found {}', [
       pollEntityId,
@@ -22,7 +22,7 @@ export function handlePublishMessage(event: PublishMessage): void {
     return
   }
 
-  let fundingRoundId = poll.fundingRound
+  const fundingRoundId = poll.fundingRound
   if (!fundingRoundId) {
     log.error(
       'Error: handlePublishMessage failed poll {} missing funding round',
@@ -31,29 +31,29 @@ export function handlePublishMessage(event: PublishMessage): void {
     return
   }
 
-  let messageID =
+  const messageID =
     event.transaction.hash.toHexString() +
     '-' +
     event.transactionLogIndex.toString()
 
-  let timestamp = event.block.timestamp.toString()
-  let message = new Message(messageID)
+  const timestamp = event.block.timestamp.toString()
+  const message = new Message(messageID)
   message.data = event.params._message.data
   message.msgType = event.params._message.msgType
   message.blockNumber = event.block.number
   message.transactionIndex = event.transaction.index
   message.submittedBy = event.transaction.from
 
-  let publicKeyId = makePublicKeyId(
+  const publicKeyId = makePublicKeyId(
     fundingRoundId,
     event.params._encPubKey.x,
     event.params._encPubKey.y
   )
-  let publicKey = PublicKey.load(publicKeyId)
+  const publicKey = PublicKey.load(publicKeyId)
 
   //NOTE: If the public keys aren't being tracked initialize them
   if (publicKey == null) {
-    let publicKey = new PublicKey(publicKeyId)
+    const publicKey = new PublicKey(publicKeyId)
     publicKey.x = event.params._encPubKey.x
     publicKey.y = event.params._encPubKey.y
     publicKey.fundingRound = fundingRoundId

@@ -2,7 +2,6 @@
 
 Only a funding round coordinator can tally votes.
 
-
 ### Tally votes
 
 Install MACI dependencies (see the github action, `.github/workflows/test-scripts.yml` for all the dependencies to install)
@@ -72,8 +71,8 @@ yarn hardhat verify-tally-file --tally-file <tally file> --tally-address <tally 
 
 After finalizing the round, enable the leaderboard view in the vue-app by exporting the round information as follow:
 
-1) Set the etherscan API key in the hardhat.config.ts file in the contracts folder
-2) Export the round and tally result
+1. Set the etherscan API key in the hardhat.config.ts file in the contracts folder
+2. Export the round and tally result
 
 ```sh
 cd contracts
@@ -81,14 +80,15 @@ cd contracts
 yarn hardhat clr-export-round --output-dir ../vue-app/src/rounds --network <network> --round-address <round address> --operator <operator> --start-block <recipient-registry-start-block> --ipfs <ipfs-gateway-url>
 
 ```
-3) Build and deploy the app
 
-
+3. Build and deploy the app
 
 ## Troubleshooting
+
 If you encountered `core dumped` while running the genProofs script as seen in this [issue](https://github.com/clrfund/monorepo/issues/383), make sure the files are not corrupted due to disk space issue, e.g. check file sizes, checksum, and missing files.
 
 Also, lack of memory can also cause `core dump`, try to work around it by setting `max-old-space-size` before rrunning the tally script.
+
 ```
 export NODE_OPTIONS=--max-old-space-size=4096
 ```

@@ -1,7 +1,7 @@
-import { log } from '@graphprotocol/graph-ts'
-import { SignUp } from '../generated/templates/MACI/MACI'
-
 import { FundingRound, PublicKey } from '../generated/schema'
+
+import { SignUp } from '../generated/templates/MACI/MACI'
+import { log } from '@graphprotocol/graph-ts'
 import { makePublicKeyId } from './PublicKey'
 
 // It is also possible to access smart contracts from mappings. For
@@ -21,10 +21,10 @@ import { makePublicKeyId } from './PublicKey'
 // - contract.verifier(...)
 
 export function handleSignUp(event: SignUp): void {
-  let fundingRoundAddress = event.transaction.to!
-  let fundingRoundId = fundingRoundAddress.toHex()
+  const fundingRoundAddress = event.transaction.to!
+  const fundingRoundId = fundingRoundAddress.toHex()
 
-  let publicKeyId = makePublicKeyId(
+  const publicKeyId = makePublicKeyId(
     fundingRoundId,
     event.params._userPubKeyX,
     event.params._userPubKeyY
@@ -40,7 +40,7 @@ export function handleSignUp(event: SignUp): void {
   publicKey.stateIndex = event.params._stateIndex
   publicKey.voiceCreditBalance = event.params._voiceCreditBalance
 
-  let fundingRound = FundingRound.load(fundingRoundId)
+  const fundingRound = FundingRound.load(fundingRoundId)
   if (fundingRound == null) {
     log.error('Error: handleSignUp failed, fundingRound not registered', [])
     return

@@ -76,7 +76,7 @@ type FundingRound @entity {
   coordinatorPubKeyX: BigInt
   coordinatorPubKeyY: BigInt
   coordinator: Bytes
- 
+
   voiceCreditFactor: BigInt
   contributorCount: BigInt!
   recipientCount: BigInt!
@@ -104,13 +104,13 @@ type RecipientRegistry @entity {
   owner: Bytes
   recipients: [Recipient!] @derivedFrom(field: "recipientRegistry")
   createdAt: String
-  lastUpdatedAt: String 
+  lastUpdatedAt: String
 }
 
 type Recipient @entity {
   id: ID!
   recipientRegistry: RecipientRegistry
-  
+
   recipientIndex: BigInt
   requestType: String
   requester: String
@@ -125,7 +125,7 @@ type Recipient @entity {
   requestSubmittedHash: Bytes
 
   fundingRounds: [FundingRound!]
-  
+
   createdAt: String
   lastUpdatedAt: String
 }
@@ -192,4 +192,3 @@ type Token @entity {
   createdAt: String
   lastUpdatedAt: String
 }
-

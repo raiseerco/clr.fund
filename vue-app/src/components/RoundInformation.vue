@@ -214,7 +214,8 @@
 
             <div class="round-info-value">
               <div class="value">
-                {{ formatAmount(roundInfo.matchingPool) }}
+                <!-- {{ formatAmount(roundInfo.matchingPool) }} -->
+                30000
               </div>
               <div class="unit">{{ roundInfo.nativeTokenSymbol }}</div>
             </div>

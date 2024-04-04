@@ -1185,7 +1185,11 @@ async function checkEns(): Promise<void> {
   &:hover {
     background: var(--bg-primary-color);
     border: 2px solid var(--border-color);
-    box-shadow: 0px 4px 16px 0px 25, 22, 35, 0.4;
+    box-shadow:
+      0px 4px 16px 0px 25,
+      22,
+      35,
+      0.4;
   }
   &:optional {
     border: 2px solid var(--border-color);

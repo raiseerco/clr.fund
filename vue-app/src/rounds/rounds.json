@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "network": "optimism",
+    "address": "0x86F33909474c0dEf2Cb7F93d2eE0B8aF26112BF6",
+    "startTime": 1710783491,
+    "votingDeadline": 1711391891,
+    "isFinalized": true
+  }
+]

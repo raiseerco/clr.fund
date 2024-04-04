@@ -47,8 +47,9 @@ describe('MACI factory', () => {
       5600000
     )
 
-    const SignUpGatekeeperArtifact =
-      await artifacts.readArtifact('SignUpGatekeeper')
+    const SignUpGatekeeperArtifact = await artifacts.readArtifact(
+      'SignUpGatekeeper'
+    )
     signUpGatekeeper = await deployMockContract(
       deployer,
       SignUpGatekeeperArtifact.abi

@@ -297,8 +297,9 @@ async function main(args: Args, hre: HardhatRuntimeEnvironment) {
     })
     userRegistryAddress = await userRegistryContract.getAddress()
   }
-  const setUserRegistryTx =
-    await clrfundContract.setUserRegistry(userRegistryAddress)
+  const setUserRegistryTx = await clrfundContract.setUserRegistry(
+    userRegistryAddress
+  )
   await setUserRegistryTx.wait()
   console.log(`Set ${userRegistryType} user registry: ${userRegistryAddress}`)
 

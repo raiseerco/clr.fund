@@ -11,5 +11,5 @@ vetur.config.js
 # Local Netlify folder
 .netlify
 .DS_Store
-
+.env
 contracts/MyLogFile.log
